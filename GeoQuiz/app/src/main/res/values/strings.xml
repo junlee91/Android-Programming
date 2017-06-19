@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">GeoQuiz</string>
+
+    <string name="question_text">
+        Constantinople is the biggest city in Turkey.
+    </string>
+    <string name="true_button">True</string>
+    <string name="false_button">False</string>
+    <string name="correct_toast">Correct!</string>
+    <string name="incorrect_toast">Incorrect!</string>
+
+    <string name="question_ocean">Pacific is greater than Atlantic.</string>
+    <string name="question_mideast">Suez canal connect Red sea and Indian ocean.</string>
+    <string name="question_africa">Nile river starts from Egypt.</string>
+    <string name="question_america">Amazon river is the longest river in America.</string>
+    <string name="question_asia">Vical Lake is the oldest and deepest lake in the world.</string>
+
+    <string name="warning_text">Are you sure to see the answer?</string>
+    <string name="show_answer_button">See answer</string>
+    <string name="cheat_button">Let\'s Cheat!</string>
+    <string name="judgement_toast">You cheater!!</string>
+</resources>

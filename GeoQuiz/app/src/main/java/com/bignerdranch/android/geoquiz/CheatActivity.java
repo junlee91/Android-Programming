@@ -67,32 +67,6 @@ public class CheatActivity extends AppCompatActivity {
                 }
             });
         }
-
-        // if(savedInstanceState != null){
-        //     mAnswerIsTrue = savedInstanceState.getBoolean(CHEATER, false);
-
-        //     if(mAnswerIsTrue){
-        //         mAnswerTextView.setText(R.string.true_button);
-        //     } else {
-        //         mAnswerTextView.setText(R.string.false_button);
-        //     }
-        //     setAnswerShownResult(true);
-
-        //     return;
-        // }
-
-        // mShowAnswer = (Button)findViewById(R.id.show_answer_button);
-        // mShowAnswer.setOnClickListener(new View.OnClickListener(){
-        //     @Override
-        //     public void onClick(View v){
-        //         if(mAnswerIsTrue){
-        //             mAnswerTextView.setText(R.string.true_button);
-        //         } else {
-        //             mAnswerTextView.setText(R.string.false_button);
-        //         }
-        //         setAnswerShownResult(true);
-        //     }
-        // });
     }
 
     @Override

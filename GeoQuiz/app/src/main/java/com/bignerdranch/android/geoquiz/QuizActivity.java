@@ -27,7 +27,7 @@ public class QuizActivity extends AppCompatActivity {
     private ImageButton mPrevButton;
     private TextView mQuestionTextView;
 
-    private ArrayList<Integer> cheatedList;
+    private ArrayList<Integer> mCheatedList;
     private int mCurrentIdx = 0;
     private boolean mIsCheater;
 
@@ -50,9 +50,9 @@ public class QuizActivity extends AppCompatActivity {
         int messageResId = 0;
 
         //TODO: Cheated index using an ArrayList<int> to identify the user has cheated.
-        if (cheatedList.contains(mCurrentIdx))
+        if (mCheatedList.contains(mCurrentIdx))
         {
-            //mIsCheater = true;
+            mIsCheater = true;
         }
 
         if(mIsCheater){
@@ -76,7 +76,7 @@ public class QuizActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate(Bundle) called");
         setContentView(R.layout.activity_quiz);
 
-        cheatedList = new ArrayList<Integer>();
+        mCheatedList = new ArrayList<Integer>();
 
         mQuestionTextView = (TextView)findViewById(R.id.question_text_view);
         mQuestionTextView.setOnClickListener(new TextView.OnClickListener(){
@@ -107,6 +107,7 @@ public class QuizActivity extends AppCompatActivity {
         mNextButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
+                if(mIsCheater) mCheatedList.add(mCurrentIdx);
 
                 mCurrentIdx = (mCurrentIdx + 1) % mQuestionBook.length;
                 mIsCheater = false;
@@ -118,6 +119,7 @@ public class QuizActivity extends AppCompatActivity {
         mPrevButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
+                if(mIsCheater) mCheatedList.add(mCurrentIdx);
 
                 mCurrentIdx = (mCurrentIdx - 1);
 
@@ -143,6 +145,7 @@ public class QuizActivity extends AppCompatActivity {
         if(savedInstanceState != null){
             mCurrentIdx = savedInstanceState.getInt(KEY_INDEX, 0);
             mIsCheater = savedInstanceState.getBoolean(CHEATER, false);
+            mCheatedList = savedInstanceState.getIntegerArrayList(CHEATER);
         }
 
         updateQuestion();
@@ -174,6 +177,7 @@ public class QuizActivity extends AppCompatActivity {
         Log.i(TAG, "onSaveInstanceState");
         savedInstanceState.putInt(KEY_INDEX, mCurrentIdx);
         savedInstanceState.putBoolean(CHEATER, mIsCheater);
+        savedInstanceState.putIntegerArrayList(CHEATER, mCheatedList);
     }
 
     @Override

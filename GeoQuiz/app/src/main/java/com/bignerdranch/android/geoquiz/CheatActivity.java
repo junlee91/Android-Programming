@@ -36,6 +36,16 @@ public class CheatActivity extends AppCompatActivity {
         return result.getBooleanExtra(EXTRA_ANSWER_SHOWN, false);
     }
 
+    private void setAnswerTextView(TextView mAnswerTextView, boolean mAnswerIsTrue)
+    {
+        if(mAnswerIsTrue){
+            mAnswerTextView.setText(R.string.true_button);
+        } else {
+            mAnswerTextView.setText(R.string.false_button);
+        }
+        setAnswerShownResult(true);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,28 +57,42 @@ public class CheatActivity extends AppCompatActivity {
         if(savedInstanceState != null){
             mAnswerIsTrue = savedInstanceState.getBoolean(CHEATER, false);
 
-            if(mAnswerIsTrue){
-                mAnswerTextView.setText(R.string.true_button);
-            } else {
-                mAnswerTextView.setText(R.string.false_button);
-            }
-            setAnswerShownResult(true);
-
-            return;
+            setAnswerTextView(mAnswerTextView, mAnswerIsTrue);
+        } else {
+            mShowAnswer = (Button)findViewById(R.id.show_answer_button);
+            mShowAnswer.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v){
+                    setAnswerTextView(mAnswerTextView, mAnswerIsTrue);
+                }
+            });
         }
 
-        mShowAnswer = (Button)findViewById(R.id.show_answer_button);
-        mShowAnswer.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                if(mAnswerIsTrue){
-                    mAnswerTextView.setText(R.string.true_button);
-                } else {
-                    mAnswerTextView.setText(R.string.false_button);
-                }
-                setAnswerShownResult(true);
-            }
-        });
+        // if(savedInstanceState != null){
+        //     mAnswerIsTrue = savedInstanceState.getBoolean(CHEATER, false);
+
+        //     if(mAnswerIsTrue){
+        //         mAnswerTextView.setText(R.string.true_button);
+        //     } else {
+        //         mAnswerTextView.setText(R.string.false_button);
+        //     }
+        //     setAnswerShownResult(true);
+
+        //     return;
+        // }
+
+        // mShowAnswer = (Button)findViewById(R.id.show_answer_button);
+        // mShowAnswer.setOnClickListener(new View.OnClickListener(){
+        //     @Override
+        //     public void onClick(View v){
+        //         if(mAnswerIsTrue){
+        //             mAnswerTextView.setText(R.string.true_button);
+        //         } else {
+        //             mAnswerTextView.setText(R.string.false_button);
+        //         }
+        //         setAnswerShownResult(true);
+        //     }
+        // });
     }
 
     @Override

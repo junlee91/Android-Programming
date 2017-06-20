@@ -1,7 +1,7 @@
 package com.bignerdbranch.andorid.criminalintent;
 
+import java.text.DateFormat;
 import java.util.Date;
-import java.util.StringTokenizer;
 import java.util.UUID;
 
 /**
@@ -47,4 +47,14 @@ public class Crime {
     public void setSolved(boolean solved) {
         this.mSolved = solved;
     }
+
+    private String SetFormatDate(Date date){
+        DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.FULL);
+        return dateFormat.format(date);
+    }
+
+    public String getDateFormat(){
+        return SetFormatDate(mDate);
+    }
+
 }

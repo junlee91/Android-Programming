@@ -24,7 +24,7 @@ public class CrimeFragment extends Fragment {
     * However in here it is public method.
     * Because theses methods are called by SOME ACTIVITY that hosts this fragment.
     *
-    * Also, Fragment.onCreate does not inflate the view.
+    * Also, Fragment.onCreate does not inflate the view. (inflate from onCreateView())
     */
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -35,6 +35,7 @@ public class CrimeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
+                                    // inflate                parent     add to parent = false
         View v = inflater.inflate(R.layout.fragment_crime, container, false);
 
         mTitleField = (EditText)v.findViewById(R.id.crime_title);

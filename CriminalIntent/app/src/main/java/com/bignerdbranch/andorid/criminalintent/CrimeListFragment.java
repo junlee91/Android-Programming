@@ -33,6 +33,7 @@ public class CrimeListFragment extends Fragment{
         return view;
     }
 
+    // connecting Adapter to RecyclerView
     private void updateUI(){
         CrimeLab crimeLab = CrimeLab.get(getActivity());
         List<Crime> crimes = crimeLab.getCrimes();
@@ -41,6 +42,7 @@ public class CrimeListFragment extends Fragment{
         mCrimeRecyclerView.setAdapter(mAdapter);
     }
 
+    // ViewHolder
     private class CrimeHolder extends RecyclerView.ViewHolder{
         public TextView mTitleTextView;
 
@@ -51,6 +53,7 @@ public class CrimeListFragment extends Fragment{
         }
     }
 
+    // Adapter
     private class CrimeAdapter extends RecyclerView.Adapter<CrimeHolder>{
         private List<Crime> mCrimes;
 
@@ -58,7 +61,7 @@ public class CrimeListFragment extends Fragment{
             mCrimes = crimes;
         }
 
-        @Override
+        @Override   // called by RecyclerView
         public CrimeHolder onCreateViewHolder(ViewGroup parent, int viewType){
             LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
             View view = layoutInflater

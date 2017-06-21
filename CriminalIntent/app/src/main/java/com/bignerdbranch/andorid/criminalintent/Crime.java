@@ -53,8 +53,13 @@ public class Crime {
         return dateFormat.format(date);
     }
 
+    private String SetFormatTime(Date date){
+        return null;
+    }
+
     public String getDateFormat(){
         return SetFormatDate(mDate);
     }
+    public String getTimeFormat() { return null; }
 
 }

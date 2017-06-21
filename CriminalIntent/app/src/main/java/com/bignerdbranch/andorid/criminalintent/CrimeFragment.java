@@ -109,7 +109,7 @@ public class CrimeFragment extends Fragment {
         });
 
         mTimeButton = (Button)v.findViewById(R.id.crime_time);
-        mTimeButton.setText(mCrime.getDateFormat());
+        mTimeButton.setText(mCrime.getTimeFormat());
         mTimeButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){

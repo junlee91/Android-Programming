@@ -54,12 +54,13 @@ public class Crime {
     }
 
     private String SetFormatTime(Date date){
-        return null;
+        String time = DateFormat.getTimeInstance().format(date);
+        return time;
     }
 
     public String getDateFormat(){
         return SetFormatDate(mDate);
     }
-    public String getTimeFormat() { return null; }
+    public String getTimeFormat() { return SetFormatTime(mDate); }
 
 }

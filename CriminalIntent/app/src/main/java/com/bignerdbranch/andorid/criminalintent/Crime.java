@@ -13,11 +13,13 @@ public class Crime {
     private UUID mId;           // Universally Unique Identifier
     private String mTitle;
     private Date mDate;
+    private Date mTime;
     private boolean mSolved;
 
     public Crime(){
         mId = UUID.randomUUID();
         mDate = new Date();
+        mTime = new Date();
     }
 
     public UUID getId() {
@@ -40,6 +42,15 @@ public class Crime {
         this.mDate = date;
     }
 
+    public Date getTime() {
+        return mTime;
+    }
+
+    public void setTime(Date time) {
+        mTime = time;
+    }
+
+
     public boolean isSolved() {
         return mSolved;
     }
@@ -61,6 +72,6 @@ public class Crime {
     public String getDateFormat(){
         return SetFormatDate(mDate);
     }
-    public String getTimeFormat() { return SetFormatTime(mDate); }
+    public String getTimeFormat() { return SetFormatTime(mTime); }
 
 }

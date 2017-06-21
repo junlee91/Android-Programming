@@ -29,7 +29,7 @@ public class CrimeFragment extends Fragment {
     private static final String DIALOG_DATE = "DialogDate";
     private static final String DIALOG_TIME = "DialogTime";
     private static final int REQUEST_DATE = 0;
-    private static final int REQUEST_TIME = 0;
+    private static final int REQUEST_TIME = 1;
 
     private Crime mCrime;
     private EditText mTitleField;
@@ -145,9 +145,17 @@ public class CrimeFragment extends Fragment {
             mCrime.setDate(date);
             updateDate();
         }
+
+        if( requestCode == REQUEST_TIME ){
+            Date time = (Date)data
+                    .getSerializableExtra(TimePickerFragment.EXTRA_TIME);
+            mCrime.setTime(time);
+            updateTime();
+        }
     }
 
     private void updateDate() {
         mDateButton.setText(mCrime.getDateFormat());
     }
+    private void updateTime() { mTimeButton.setText(mCrime.getTimeFormat());}
 }

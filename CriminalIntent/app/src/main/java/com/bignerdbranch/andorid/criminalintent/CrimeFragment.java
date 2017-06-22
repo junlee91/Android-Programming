@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.Date;
 import java.util.UUID;
@@ -35,6 +36,7 @@ public class CrimeFragment extends Fragment {
     private EditText mTitleField;
     private Button mDateButton;
     private Button mTimeButton;
+    private Button mDeleteButton;
     private CheckBox mSolvedCheckBox;
 
     public static CrimeFragment newInstance(UUID crimeId){
@@ -129,6 +131,17 @@ public class CrimeFragment extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 // set the value of mSolved
                 mCrime.setSolved(isChecked);
+            }
+        });
+
+        mDeleteButton = (Button)v.findViewById(R.id.crime_delete);
+        mDeleteButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                CrimeLab crimes = CrimeLab.get(getActivity());
+                crimes.deleteCrime(mCrime);
+                Toast.makeText(getActivity(), "Deleted!", Toast.LENGTH_SHORT).show();
+                getActivity().finish();
             }
         });
 

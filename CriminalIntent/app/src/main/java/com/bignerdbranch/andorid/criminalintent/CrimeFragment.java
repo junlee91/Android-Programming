@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.LayoutInflaterCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -164,13 +165,18 @@ public class CrimeFragment extends Fragment {
             Date date = (Date) data
                     .getSerializableExtra(DatePickerFragment.EXTRA_DATE);
             mCrime.setDate(date);
+            mCrime.setTime(date);
             updateDate();
+            updateTime();
         }
 
         if( requestCode == REQUEST_TIME ){
             Date time = (Date)data
                     .getSerializableExtra(TimePickerFragment.EXTRA_TIME);
+            Log.d("CrimeFragment", "onActivityResult: " + time.toString());
             mCrime.setTime(time);
+            mCrime.setDate(time);
+            updateDate();
             updateTime();
         }
     }

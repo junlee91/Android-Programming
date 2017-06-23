@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,7 +25,7 @@ import java.util.List;
  */
 
 public class CrimeListFragment extends Fragment {
-
+    private static final String TAG = "CrimeListFragment";
     private static final String SAVED_SUBTITLE_VISIBLE = "subtitle";
 
     private RecyclerView mCrimeRecyclerView;
@@ -174,6 +175,10 @@ public class CrimeListFragment extends Fragment {
             mTitleTextView.setText(mCrime.getTitle());
             mDateTextView.setText(mCrime.getDateFormat());
             mSolvedCheckBox.setChecked(mCrime.isSolved());
+
+            Log.d(TAG, "bindCrime: " + crime.getTime().toString());
+            //Log.d(TAG, "bindCrime: " + crime.getDateFormat());
+            //Log.d(TAG, "bindCrime: " + crime.getTimeFormat());
         }
 
         @Override

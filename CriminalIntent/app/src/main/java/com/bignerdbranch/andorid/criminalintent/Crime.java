@@ -1,5 +1,6 @@
 package com.bignerdbranch.andorid.criminalintent;
 
+import java.sql.Time;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.UUID;
@@ -17,7 +18,11 @@ public class Crime {
     private boolean mSolved;
 
     public Crime(){
-        mId = UUID.randomUUID();
+        this(UUID.randomUUID());
+    }
+
+    public Crime(UUID id){
+        mId = id;
         mDate = new Date();
         mTime = new Date();
     }

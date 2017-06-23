@@ -35,7 +35,7 @@ public class CrimeLab {
     }
 
     private CrimeLab(Context context){
-
+        // This will never be garbage collected to maintain the data.
         mContext = context.getApplicationContext();
         mDatabase = new CrimeBaseHelper(mContext)
                 .getWritableDatabase();
@@ -58,8 +58,7 @@ public class CrimeLab {
 
     public void deleteCrime(Crime c){
         // mCrimes.remove(c);
-        ContentValues values = getContentValues(c);
-        // mDatabase.delete(CrimeTable.NAME, values);
+        mDatabase.delete(CrimeTable.NAME, CrimeTable.Cols.UUID + " = ?", new String[]{c.getId().toString()});
     }
 
     public List<Crime> getCrimes(){

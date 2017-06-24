@@ -2,6 +2,8 @@ package com.bignerdbranch.andorid.criminalintent;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
@@ -201,7 +203,7 @@ public class CrimeFragment extends Fragment {
             updateTime();
         }
 
-        if( requestCode == REQUEST_TIME ){
+        else if( requestCode == REQUEST_TIME ){
             Date time = (Date)data
                     .getSerializableExtra(TimePickerFragment.EXTRA_TIME);
             Log.d("CrimeFragment", "onActivityResult: " + time.toString());
@@ -209,6 +211,33 @@ public class CrimeFragment extends Fragment {
             mCrime.setDate(time);
             updateDate();
             updateTime();
+        }
+
+        else if( requestCode == REQUEST_CONTACT && data != null){
+            Uri contactUri = data.getData();
+            // set query field for return value
+            String[] queryFields = new String[]{
+                    ContactsContract.Contacts.DISPLAY_NAME
+            };
+
+            // execute query.
+            // contactUri is WHERE cause in SQL
+            Cursor c = getActivity().getContentResolver()
+                    .query(contactUri, queryFields, null, null, null);
+
+            try{
+                // check result data from query
+                if(c.getCount() == 0) return;
+
+                // take first row first column
+                // set to suspect name
+                c.moveToFirst();
+                String suspect = c.getString(0);
+                mCrime.setSuspect(suspect);
+                mSuspectButton.setText(suspect);
+            } finally {
+                c.close();
+            }
         }
     }
 

@@ -5,9 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.view.LayoutInflaterCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -185,4 +185,33 @@ public class CrimeFragment extends Fragment {
         mDateButton.setText(mCrime.getDateFormat());
     }
     private void updateTime() { mTimeButton.setText(mCrime.getTimeFormat());}
+
+    private String getCrimeReport(){
+        String solvedString = null;
+        if(mCrime.isSolved()){
+            solvedString = getString(R.string.crime_report_solved);
+        } else {
+            solvedString = getString(R.string.crime_report_unsolved);
+        }
+
+        String dateFormat = "EEE, MMM dd";
+        String dateString = DateFormat.format(dateFormat, mCrime.getDate()).toString();
+
+        String suspect = mCrime.getSuspect();
+        if(suspect == null)
+            suspect = getString(R.string.crime_report_no_suspect);
+        else
+            suspect = getString(R.string.crime_report_suspect, suspect);
+
+        String report = getString(R.string.crime_report,
+                mCrime.getTitle(), dateString, solvedString, suspect);
+
+        return report;
+    }
+
+
+
+
+
+
 }

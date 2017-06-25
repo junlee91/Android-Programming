@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.ShareCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
@@ -46,6 +47,9 @@ public class CrimeFragment extends Fragment {
     private CheckBox mSolvedCheckBox;
     private Button mReportButton;
     private Button mSuspectButton;
+    private Button mCallButton;
+
+    private Uri phoneNumber;
 
     public static CrimeFragment newInstance(UUID crimeId){
         Bundle args = new Bundle();
@@ -184,8 +188,20 @@ public class CrimeFragment extends Fragment {
             }
         });
 
+        mCallButton = (Button)v.findViewById(R.id.suspect_call);
+        mCallButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent callContact = new Intent(Intent.ACTION_DIAL);
+                callContact.setData(phoneNumber);
+                startActivity(callContact);
+            }
+        });
+
         if(mCrime.getSuspect() != null){
             mSuspectButton.setText(mCrime.getSuspect());
+        } else {
+            mCallButton.setEnabled(false);
         }
 
         PackageManager packageManager = getActivity().getPackageManager();
@@ -193,6 +209,7 @@ public class CrimeFragment extends Fragment {
                 PackageManager.MATCH_DEFAULT_ONLY) == null){
             mSuspectButton.setEnabled(false);
         }
+
 
         return v;
     }
@@ -227,6 +244,9 @@ public class CrimeFragment extends Fragment {
                     ContactsContract.Contacts.DISPLAY_NAME
             };
 
+
+            phoneNumber = contactUri.parse("tel:010");
+
             // execute query.
             // contactUri is WHERE cause in SQL
             Cursor c = getActivity().getContentResolver()
@@ -242,6 +262,7 @@ public class CrimeFragment extends Fragment {
                 String suspect = c.getString(0);
                 mCrime.setSuspect(suspect);
                 mSuspectButton.setText(suspect);
+                mCallButton.setEnabled(true);
             } finally {
                 c.close();
             }

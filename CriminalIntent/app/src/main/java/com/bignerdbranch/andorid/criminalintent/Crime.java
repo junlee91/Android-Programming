@@ -71,6 +71,11 @@ public class Crime {
         mSuspect = suspect;
     }
 
+    public String getPhotoFilename(){
+        return "IMG_" + getId().toString() + ".jpg";
+    }
+
+
     private String SetFormatDate(Date date){
         DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.FULL);
         return dateFormat.format(date);

@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.FileProvider;
@@ -243,6 +244,18 @@ public class CrimeFragment extends Fragment {
         mPhotoView = (ImageView)v.findViewById(R.id.crime_photo);
         updatePhotoView();
 
+        mPhotoView.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                FragmentManager manager = getFragmentManager();
+
+                DialogCaptureFragment dialog = DialogCaptureFragment
+                        .newInstance(mPhotoFile);
+
+                dialog.show(manager, "show");
+            }
+        });
+
         return v;
     }
 
@@ -337,6 +350,7 @@ public class CrimeFragment extends Fragment {
         } else {
             Bitmap bitmap = PictureUtils.getScaledBitmap(
                     mPhotoFile.getPath(), getActivity());
+
             mPhotoView.setImageBitmap(bitmap);
         }
     }

@@ -10,6 +10,7 @@ import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.FileProvider;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
@@ -227,14 +228,14 @@ public class CrimeFragment extends Fragment {
         mPhotoButton.setEnabled(canTakePhoto);
 
         if(canTakePhoto){
-            Uri muri = Uri.fromFile(mPhotoFile);
-            captureImage.putExtra(MediaStore.EXTRA_OUTPUT, muri);
+            Uri uri = FileProvider.getUriForFile(getContext(), "com.bignerdbranch.andorid.criminalintent.fileProvider", mPhotoFile);
+            captureImage.putExtra(MediaStore.EXTRA_OUTPUT, uri);
         }
 
         mPhotoButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                 startActivityForResult(captureImage, REQUEST_PHOTO);
+                startActivityForResult(captureImage, REQUEST_PHOTO);
             }
         });
 

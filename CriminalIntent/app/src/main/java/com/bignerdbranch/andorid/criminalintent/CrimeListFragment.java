@@ -156,7 +156,7 @@ public class CrimeListFragment extends Fragment {
     }
 
     // connecting Adapter to RecyclerView
-    private void updateUI() {
+    public void updateUI() {
         CrimeLab crimeLab = CrimeLab.get(getActivity());
         List<Crime> crimes = crimeLab.getCrimes();
 

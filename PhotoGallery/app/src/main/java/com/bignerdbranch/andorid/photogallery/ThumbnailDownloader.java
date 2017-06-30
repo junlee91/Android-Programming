@@ -7,6 +7,7 @@ import android.os.HandlerThread;
 import android.os.Message;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.util.Log;
+import android.util.LruCache;
 
 import java.io.IOException;
 import java.util.concurrent.ConcurrentHashMap;
@@ -25,6 +26,8 @@ public class ThumbnailDownloader<T> extends HandlerThread {
     private Handler mResponseHandler;
     private ThumbnailDownloadListener<T> mThumbnailDownloadListener;
 
+    private LruCache<T, Bitmap> mMemoryCache;
+
     public interface ThumbnailDownloadListener<T>{
         // This will be called when an image has completely downloaded and ready to set UI.
         void onThumbnailDownloaded(T target, Bitmap thumbnail);
@@ -38,6 +41,26 @@ public class ThumbnailDownloader<T> extends HandlerThread {
     public ThumbnailDownloader(Handler responseHandler){
         super(TAG);
         mResponseHandler = responseHandler;
+
+        final int maxMemory = (int)(Runtime.getRuntime().maxMemory() / 1024);
+        final int cacheSize = maxMemory/8;
+
+        mMemoryCache = new LruCache<T, Bitmap>(cacheSize){
+            @Override
+            protected int sizeOf(T target, Bitmap bitmap){
+                return bitmap.getByteCount() / 1024;
+            }
+        };
+    }
+
+    public void addBitmapToMemoryCache(T target, Bitmap bitmap){
+        if(getBitmapFromMemCache(target) == null){
+            mMemoryCache.put(target, bitmap);
+        }
+    }
+
+    public Bitmap getBitmapFromMemCache(T target){
+        return mMemoryCache.get(target);
     }
 
     @Override
@@ -49,7 +72,7 @@ public class ThumbnailDownloader<T> extends HandlerThread {
                     T target = (T)msg.obj;
 
                     Log.i(TAG, "Got a request for URL: " + mRequestMap.get(target));
-                    handleRequest(target);
+                    handleRequest(target); // Start Download!!
                 }
             }
         };
@@ -77,10 +100,21 @@ public class ThumbnailDownloader<T> extends HandlerThread {
             final String url = mRequestMap.get(target);
             if(url == null) return;
 
-            byte[] bitmapBytes = new FlickrFetchr().getUrlBytes(url);
-            final Bitmap bitmap = BitmapFactory
-                    .decodeByteArray(bitmapBytes, 0, bitmapBytes.length);
-            Log.i(TAG, "Bitmap created");
+            final Bitmap bitmap;
+
+            if(getBitmapFromMemCache(target) != null)
+            {
+                bitmap = getBitmapFromMemCache(target);
+            }
+            else {
+
+                byte[] bitmapBytes = new FlickrFetchr().getUrlBytes(url);
+                bitmap = BitmapFactory
+                        .decodeByteArray(bitmapBytes, 0, bitmapBytes.length);
+                Log.i(TAG, "Bitmap created");
+
+                addBitmapToMemoryCache(target, bitmap);
+            }
 
             mResponseHandler.post(new Runnable() {
                 @Override

@@ -51,7 +51,7 @@ public class PhotoGalleryFragment extends Fragment {
         mPhotoRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
 
         setupAdapter();
-        
+
         return v;
     }
 
@@ -104,11 +104,20 @@ public class PhotoGalleryFragment extends Fragment {
     }
 
 
-    private class FetchItemsTask extends AsyncTask<Void, Void, Void>{
+    private class FetchItemsTask extends AsyncTask<Void, Void, List<GalleryItem>>{
         @Override
-        protected Void doInBackground(Void... params){
-            new FlickrFetchr().fetchItems();
-            return null;
+        protected List<GalleryItem> doInBackground(Void... params){
+
+            return new FlickrFetchr().fetchItems();
+            //new FlickrFetchr().fetchItems();
+            // return null;
+        }
+
+        // onPostExecute executes after doInBackground task finishes
+        @Override
+        protected void onPostExecute(List<GalleryItem> items){
+            mItems = items;
+            setupAdapter();
         }
     }
 }

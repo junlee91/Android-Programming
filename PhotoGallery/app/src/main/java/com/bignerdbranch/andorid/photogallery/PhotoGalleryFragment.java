@@ -108,6 +108,7 @@ public class PhotoGalleryFragment extends Fragment {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 Log.d(TAG, "QueryTextSubmit: " + query);
+                QueryPreferences.setStoredQuery(getActivity(), query);
                 updateItems();
                 return true;
             }
@@ -118,9 +119,23 @@ public class PhotoGalleryFragment extends Fragment {
                 return false;
             }
         });
-}
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem){
+        switch (menuItem.getItemId()){
+            case R.id.menu_item_clear:
+                QueryPreferences.setStoredQuery(getActivity(), null);
+                updateItems();
+                return true;
+            default:
+                return super.onOptionsItemSelected(menuItem);
+        }
+    }
+
     private void updateItems(){
-        new FetchItemsTask().execute();
+        String query = QueryPreferences.getStoredQuery(getActivity());
+        new FetchItemsTask(query).execute();
     }
 
     private void setupAdapter(){
@@ -185,6 +200,13 @@ public class PhotoGalleryFragment extends Fragment {
 
 
     private class FetchItemsTask extends AsyncTask<Void, Void, List<GalleryItem>>{
+
+        private String mQuery;
+
+        public FetchItemsTask(String query){
+            mQuery = query;
+        }
+
         @Override
         protected List<GalleryItem> doInBackground(Void... params){
 
@@ -192,12 +214,12 @@ public class PhotoGalleryFragment extends Fragment {
             //new FlickrFetchr().fetchItems();
             // return null;
 
-            String query = "robot"; //temporary query
+            // String query = "robot"; //temporary query
 
-            if(query == null){
+            if(mQuery == null){
                 return new FlickrFetchr().fetchRecentPhotos();
             } else {
-                return new FlickrFetchr().searchPhotos(query);
+                return new FlickrFetchr().searchPhotos(mQuery);
             }
         }
 

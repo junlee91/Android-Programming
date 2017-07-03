@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -39,6 +40,7 @@ public class PhotoGalleryFragment extends Fragment {
     private RecyclerView mPhotoRecyclerView;
     private List<GalleryItem> mItems = new ArrayList<>();
     private ThumbnailDownloader<PhotoHolder> mThumbnailDownloader;
+    private ProgressBar mProgressBar;
 
     public static PhotoGalleryFragment newInstance(){
         return new PhotoGalleryFragment();
@@ -78,6 +80,11 @@ public class PhotoGalleryFragment extends Fragment {
                 .findViewById(R.id.fragment_photo_gallery_recycler_view);
         mPhotoRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
 
+        mProgressBar = (ProgressBar)v.findViewById(R.id.progressBar);
+        if(savedInstanceState != null){
+            hideProgressBar();
+        }
+
         setupAdapter();
 
         return v;
@@ -101,7 +108,7 @@ public class PhotoGalleryFragment extends Fragment {
         super.onCreateOptionsMenu(menu, menuInflater);
         menuInflater.inflate(R.menu.fragment_photo_gallery, menu);
 
-        MenuItem searchItem = menu.findItem(R.id.menu_item_search);
+        final MenuItem searchItem = menu.findItem(R.id.menu_item_search);
         final SearchView searchView = (SearchView)searchItem.getActionView();
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -109,6 +116,8 @@ public class PhotoGalleryFragment extends Fragment {
             public boolean onQueryTextSubmit(String query) {
                 Log.d(TAG, "QueryTextSubmit: " + query);
                 QueryPreferences.setStoredQuery(getActivity(), query);
+                searchView.onActionViewCollapsed();
+                showProgressBar();
                 updateItems();
                 return true;
             }
@@ -117,6 +126,14 @@ public class PhotoGalleryFragment extends Fragment {
             public boolean onQueryTextChange(String newText) {
                 Log.d(TAG, "QueryTextChange: " + newText);
                 return false;
+            }
+        });
+
+        searchView.setOnSearchClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                String query = QueryPreferences.getStoredQuery(getActivity());
+                searchView.setQuery(query, false);
             }
         });
     }
@@ -133,8 +150,21 @@ public class PhotoGalleryFragment extends Fragment {
         }
     }
 
+    private void showProgressBar(){
+        mProgressBar.setVisibility(View.VISIBLE);
+    }
+    private void hideProgressBar(){
+        mProgressBar.setVisibility(View.INVISIBLE);
+    }
+
     private void updateItems(){
         String query = QueryPreferences.getStoredQuery(getActivity());
+
+        if(mPhotoRecyclerView != null){
+            mItems.clear();
+            mPhotoRecyclerView.getAdapter().notifyDataSetChanged();
+        }
+
         new FetchItemsTask(query).execute();
     }
 
@@ -228,6 +258,9 @@ public class PhotoGalleryFragment extends Fragment {
         protected void onPostExecute(List<GalleryItem> items){
             mItems = items;
             setupAdapter();
+            if(mProgressBar != null){
+                hideProgressBar();
+            }
         }
     }
 }

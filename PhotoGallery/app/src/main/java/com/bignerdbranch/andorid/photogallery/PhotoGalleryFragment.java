@@ -156,9 +156,17 @@ public class PhotoGalleryFragment extends Fragment {
         @Override
         protected List<GalleryItem> doInBackground(Void... params){
 
-            return new FlickrFetchr().fetchItems();
+            // return new FlickrFetchr().fetchItems();
             //new FlickrFetchr().fetchItems();
             // return null;
+
+            String query = "robot"; //temporary query
+
+            if(query == null){
+                return new FlickrFetchr().fetchRecentPhotos();
+            } else {
+                return new FlickrFetchr().searchPhotos(query);
+            }
         }
 
         // onPostExecute executes after doInBackground task finishes

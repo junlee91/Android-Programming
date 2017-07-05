@@ -22,8 +22,9 @@ import java.util.List;
 
 public class PollService extends IntentService {
     private static final String TAG = "PollService";
-    private static final int POLL_INTERVAL = 1000 * 60; // 60 seconds
-
+    // private static final int POLL_INTERVAL = 1000 * 60; // 60 seconds
+    private static final long POLL_INTERVAL = AlarmManager.INTERVAL_FIFTEEN_MINUTES;
+    
     public static Intent newIntent(Context context){
         return new Intent(context, PollService.class);
     }
